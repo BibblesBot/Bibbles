@@ -1,0 +1,27 @@
+services:
+    bibbles_mongo:
+        image: mongo
+        restart: always
+        container_name: bibbles_mongo
+        logging:
+            driver: "json-file"
+            options:
+                max-size: 1g
+        volumes:
+            - bibbles_mongo:/data/db
+        ports:
+            - "27017:27017"
+
+    bibbles_bot:
+        build:
+            context: .
+        depends_on:
+            - bibbles_mongo
+        volumes:
+            - bibbles_logs:/app/logs
+
+volumes:
+    bibbles_mongo:
+        driver: local
+    bibbles_logs:
+        driver: local
